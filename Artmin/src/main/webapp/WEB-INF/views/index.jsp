@@ -16,5 +16,7 @@
             <a href="demo">Ga naar demo applicatie</a>
             <br><br>
             <a href="artmin" />Ga naar Artmin</a>
+            <br><br>
+            <a href="login/newuser" />Nieuwe user? Registreer hier!</a>
     </body>
 </html>

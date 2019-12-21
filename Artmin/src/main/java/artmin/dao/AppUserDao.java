@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 import artmin.model.AppUser;
 
 @Repository("appUserDao")
-public class AppUserDao extends AbstractDao<Integer, AppUser>{
+public class AppUserDao extends AbstractDao<Long, AppUser>{
 static final Logger logger = LoggerFactory.getLogger(AppUserDao.class);
 
-    public AppUser findById(int id) {
+    public AppUser findById(long id) {
         AppUser user = getByKey(id);
         if(user!=null){
             Hibernate.initialize(user.getUserProfiles());

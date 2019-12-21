@@ -19,7 +19,7 @@ public class AppUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AppUser findById(int id) {
+    public AppUser findById(long id) {
         return dao.findById(id);
     }
 
@@ -60,7 +60,7 @@ public class AppUserService {
         return dao.findAllUsers();
     }
 
-    public boolean isUserSSOUnique(Integer id, String sso) {
+    public boolean isUserSSOUnique(Long id, String sso) {
         AppUser user = findBySSO(sso);
         return ( user == null || ((id != null) && (user.getId() == id)));
     }

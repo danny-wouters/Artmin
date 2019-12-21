@@ -30,6 +30,7 @@ import artmin.model.AppUser;
 import artmin.model.UserProfile;
 import artmin.service.UserProfileService;
 import artmin.service.AppUserService;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequestMapping("/login")
@@ -54,6 +55,15 @@ public class LoginController {
     /**
      * This method will list all existing users.
      */
+    
+      @RequestMapping(value = {"/showLogin"}, method = RequestMethod.GET)
+    public String loginUser(ModelMap model) {
+
+        // verzamelen gegevens voor het login venster
+        return "login"; // JSP Pagina pointer
+    }
+    
+    
     @RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
 
@@ -71,7 +81,7 @@ public class LoginController {
         AppUser user = new AppUser();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
+        //model.addAttribute("loggedinuser", getPrincipal());
         return "registration";
     }
 
@@ -80,7 +90,7 @@ public class LoginController {
      * saving user in database. It also validates the user input
      */
     @RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
-    public String saveUser(@Valid AppUser user, BindingResult result,
+    public String saveUser(@Valid @ModelAttribute("user") AppUser user, BindingResult result,
             ModelMap model) {
 
         if (result.hasErrors()) {
@@ -95,16 +105,16 @@ public class LoginController {
          * framework as well while still using internationalized messages.
          *
          */
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }
+//        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
+//            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+//            result.addError(ssoError);
+//            return "registration";
+//        }
 
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " registered successfully");
-        model.addAttribute("loggedinuser", getPrincipal());
+//        model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
         return "registrationsuccess";
     }

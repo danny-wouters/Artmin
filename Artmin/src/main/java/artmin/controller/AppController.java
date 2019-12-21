@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import artmin.model.DemoUser;
 import artmin.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequestMapping("/")
@@ -32,8 +33,9 @@ public class AppController {
      * This method will list all existing users.
      */
     // *FROM* Route aangeven, deze methode wordt aangesporken als er geen route wordt eengegeven "/" of als de de route "/list" wordt gegeven in de URL
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"", "index"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
         return "index"; // JSP Pagina pointer
     }
+    
 }
