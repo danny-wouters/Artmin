@@ -26,7 +26,7 @@ public class UserArtistService {
     private UserArtistDao dao;
      
     // zoeken van UserArtists op basis van ID
-    public UserArtist findById(long userId, long artistId) {
+    public UserArtist findById(Long userId, Long artistId) {
         return dao.findById(userId, artistId);
     }
  
@@ -44,7 +44,7 @@ public class UserArtistService {
     }
  
     // verwijderen van UserArtists
-    public void deleteUserArtistById(long userId, long artistId) {
+    public void deleteUserArtistById(Long userId, Long artistId) {
         dao.deleteUserArtistByUserIdAndArtistId(userId, artistId);
     }
      
@@ -53,7 +53,7 @@ public class UserArtistService {
         return dao.findAllUserArtists();
     }
     // zoeken van alle UserArtists met role
-    public List<UserArtist> findAllUserArtistsByUserdIdAndRole(long userId, long artistId) {
+    public List<UserArtist> findAllUserArtistsByUserdIdAndRole(Long userId, Long artistId) {
         return dao.findAllUserArtistsByUserdIdAndRole(userId, artistId);
     }
 

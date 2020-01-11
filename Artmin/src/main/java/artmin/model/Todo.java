@@ -5,6 +5,7 @@
  */
 package artmin.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,40 +20,38 @@ import javax.persistence.Table;
  *
  * @author Rei
  */
-
 @Entity
-@Table(name="Todo")
-public class Todo {
-    
+@Table(name = "Todos")
+public class Todo  implements Serializable {
+
 //    Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "eventID", nullable=false)
-    private Long eventID;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Event events;
-    
-    @Column(name = "sortNumber", nullable=false)
-    private int sortNumber;
-    
-    @Column(name = "name", nullable=false)
-    private String name;
-    
-    @Column(name = "description", nullable=true)
-    private String description;
-    
-    @Column(name = "attachmentFilePath", nullable=true)
-    private String attachmentFilePath;
-    
-    @Column(name = "ack", nullable=true)
-    private boolean ack;
-    
-    
-//    Properties
 
+    @Column(name = "eventID", nullable = false, insertable = false, updatable = false)
+    private Long eventID;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "eventID") // Object link naar Database ID
+    private Event event;
+
+    @Column(name = "sortNumber", nullable = false)
+    private int sortNumber;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    @Column(name = "attachmentFilePath", nullable = true)
+    private String attachmentFilePath;
+
+    @Column(name = "ack", nullable = true)
+    private boolean ack;
+
+//    Properties
     public Long getId() {
         return id;
     }
@@ -69,13 +68,15 @@ public class Todo {
         this.eventID = eventID;
     }
 
-    public Event getEvents() {
-        return events;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEvents(Event events) {
-        this.events = events;
+    public void setEvent(Event event) {
+        this.event = event;
     }
+
+
 
     public int getSortNumber() {
         return sortNumber;
@@ -117,40 +118,45 @@ public class Todo {
         this.ack = ack;
     }
 
-    
 //    Methodes
-    
     @Override
     public int hashCode() {
         final int prime = 31;
         long result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return (int)result;
+        return (int) result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (!(obj instanceof Todo))
+        }
+        if (!(obj instanceof Todo)) {
             return false;
+        }
         Todo other = (Todo) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.id != null) {
                 return false;
-        } else if (!id.equals(other.id))
+            }
+        } else if (!id.equals(other.id)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
- 
+
     @Override
     public String toString() {
         return "Todo [id=" + id + ", name=" + name + "]";

@@ -5,6 +5,7 @@
  */
 package artmin.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,42 +21,38 @@ import javax.persistence.Table;
  *
  * @author Rei
  */
-
-
 @Entity
-@Table(name="Payments")
-public class Payment {
-    
+@Table(name = "Payments")
+public class Payment implements Serializable {
+
     //    Attributen
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "eventID", nullable=false)
+
+    @Column(name = "eventID", nullable = false, insertable = false, updatable = false)
     private Long eventID;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    private Event events;
-    
-    @Column(name = "modeTimeStamp", nullable=false)
+    @JoinColumn(name = "eventID") // Object link naar Database ID
+    private Event event;
+
+    @Column(name = "modeTimeStamp", nullable = false)
     private LocalDateTime modeTimeStamp;
-    
-    @Column(name = "name", nullable=false)
+
+    @Column(name = "name", nullable = false)
     private String name;
-    
-    @Column(name = "description", nullable=false)
+
+    @Column(name = "description", nullable = false)
     private String description;
-    
-    @Column(name = "price", nullable=false)
+
+    @Column(name = "price", nullable = false)
     private Double price;
-    
-    @Column(name = "ack", nullable=false)
+
+    @Column(name = "ack", nullable = false)
     private boolean ack;
- 
 
 //    Properties
-
     public Long getId() {
         return id;
     }
@@ -72,12 +69,12 @@ public class Payment {
         this.eventID = eventID;
     }
 
-    public Event getEvents() {
-        return events;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEvents(Event events) {
-        this.events = events;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public LocalDateTime getModeTimeStamp() {
@@ -120,9 +117,6 @@ public class Payment {
         this.ack = ack;
     }
 
-    
-
-    
 //    Methodes
     @Override
     public int hashCode() {
@@ -130,31 +124,38 @@ public class Payment {
         long result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return (int)result;
+        return (int) result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (!(obj instanceof Payment))
+        }
+        if (!(obj instanceof Payment)) {
             return false;
+        }
         Payment other = (Payment) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.id != null) {
                 return false;
-        } else if (!id.equals(other.id))
+            }
+        } else if (!id.equals(other.id)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
- 
+
     @Override
     public String toString() {
         return "Payment [id=" + id + ", name=" + name + "]";

@@ -5,6 +5,7 @@
  */
 package artmin.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -23,64 +25,58 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Rei
  */
 @Entity
-@Table(name="Clients")
-public class Client {
-    
+@Table(name = "Clients")
+public class Client implements Serializable {
+
     //    Attributen
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "userID", nullable=false)
-    private int userID;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @Column(name = "userID")
+    private Long userID;
+
+    @Transient
     private User user;
-    
-    @Column(name = "artistID", nullable=false)
-    private int artistID;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @Column(name = "artistID")
+    private Long artistID;
+
+    @Transient
     private Artist artist;
-    
+
     @NotEmpty
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @Column(name = "street", nullable = true)
     private String street;
-    
+
     @Column(name = "nrBus", nullable = true)
     private String nrBus;
-    
+
     @Column(name = "postCode", nullable = true)
     private String postCode;
-    
+
     @Column(name = "city", nullable = true)
     private String city;
-    
+
     @Column(name = "country", nullable = true)
     private String country;
-    
+
     @Column(name = "phone", nullable = true)
     private String phone;
-    
+
     @Column(name = "email", nullable = true)
     private String email;
-    
+
     @Column(name = "vat", nullable = true)
     private String vat;
-    
+
     @Column(name = "ack", nullable = true)
     private boolean ack;
-    
-    @OneToMany(fetch=FetchType.LAZY)
-    @JoinColumn(name="clientID")
-    private Set<Event> events;
-    
-//    Properties
 
+//    Properties
     public Long getId() {
         return id;
     }
@@ -89,13 +85,7 @@ public class Client {
         this.id = id;
     }
 
-    public int getUserID() {
-        return userID;
-    }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
 
     public User getUser() {
         return user;
@@ -105,13 +95,23 @@ public class Client {
         this.user = user;
     }
 
-    public int getArtistID() {
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public Long getArtistID() {
         return artistID;
     }
 
-    public void setArtistID(int artistID) {
+    public void setArtistID(Long artistID) {
         this.artistID = artistID;
     }
+
+
 
     public Artist getArtist() {
         return artist;
@@ -201,51 +201,82 @@ public class Client {
         this.ack = ack;
     }
 
-    public Set<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(Set<Event> events) {
-        this.events = events;
-    }
-
-    
-    
 //    Methodes
-    
+    public boolean isComplete() {
+        // check of alle velden zijn ingevuld ==> set ACK
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
+
+        if (street == null || street.isEmpty()) {
+            return false;
+        }
+
+        if (nrBus == null || nrBus.isEmpty()) {
+            return false;
+        }
+
+        if (postCode == null || postCode.isEmpty()) {
+            return false;
+        }
+
+        if (city == null || city.isEmpty()) {
+            return false;
+        }
+
+        if (country == null || country.isEmpty()) {
+            return false;
+        }
+
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+
+        this.setAck(true);
+
+        return true;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         long result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return (int)result;
+        return (int) result;
     }
- 
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (!(obj instanceof Client))
+        }
+        if (!(obj instanceof Client)) {
             return false;
+        }
         Client other = (Client) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.id != null) {
                 return false;
-        } else if (!id.equals(other.id))
+            }
+        } else if (!id.equals(other.id)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
- 
+
     @Override
     public String toString() {
         return "Client [id=" + id + ", name=" + name + "]";
-    }   
+    }
 }

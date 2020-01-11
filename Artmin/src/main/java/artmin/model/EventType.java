@@ -5,6 +5,7 @@
  */
 package artmin.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="EventTypes")
-public class EventType {
+public class EventType implements Serializable {
     //    Attributen
     
     @Id
@@ -36,10 +37,11 @@ public class EventType {
     @Column(name = "name", nullable = false)
     private String name;
     
-    @Column(name = "artistID", nullable=false)
+    @Column(name = "artistID", nullable = false, insertable = false, updatable = false)
     private Long artistID;
     
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artistID") // Object link naar Database ID
     private Artist artist;
     
     @OneToMany(fetch=FetchType.LAZY)

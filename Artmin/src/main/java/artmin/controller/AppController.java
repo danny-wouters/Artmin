@@ -1,5 +1,6 @@
 package artmin.controller;
 
+import artmin.model.Artist;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import artmin.model.DemoUser;
+import artmin.service.ArtistService;
 import artmin.service.UserService;
 
 @Controller
@@ -28,12 +30,22 @@ public class AppController {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired
+    ArtistController artistController;
+
+    @Autowired
+    ArtistService artistService;
+    
+    @Autowired
+    EventController eventController;
+
     /*
      * This method will list all existing users.
      */
     // *FROM* Route aangeven, deze methode wordt aangesporken als er geen route wordt eengegeven "/" of als de de route "/list" wordt gegeven in de URL
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String listUsers(ModelMap model) {
+    public String start(ModelMap model) {
+ 
         return "index"; // JSP Pagina pointer
     }
 }

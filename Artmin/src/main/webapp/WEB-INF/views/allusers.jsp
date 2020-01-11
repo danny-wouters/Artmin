@@ -5,6 +5,7 @@
 <head>
     <title>Users</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<c:url value="/resources/bootstrap.css" />" rel="stylesheet">
     <style>
         tr:first-child{
